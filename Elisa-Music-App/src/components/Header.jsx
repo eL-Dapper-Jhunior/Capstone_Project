@@ -3,7 +3,7 @@ import React from "react";
 
 function Header() {
   return (
-    <header className="bg-blue-900 text-white flex justify-between items-center p-4">
+    <header className="bg-blue-700 text-white flex justify-between items-center p-4">
       <div className="text-2xl font-bold">🎵 Elisa's</div>
       <input
         type="text"
