@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import axios from "axios";
 
 function Header() {
@@ -47,15 +48,29 @@ function Header() {
             <ul className="p-4 space-y-2">
               {searchResults.map((track) => (
                 <li key={track.id} className="flex items-center space-x-4">
-                  <img
-                    src={track.album.cover}
-                    alt={track.title}
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <div>
-                    <p className="font-bold">{track.title}</p>
-                    <p className="text-sm text-gray-500">{track.artist.name}</p>
-                  </div>
+                  {/* Navigate to /music with the selected track's details */}
+                  <Link
+                    to={{
+                      pathname: "/music",
+                      state: {
+                        trackId: track.id,
+                        title: track.title,
+                        artist: track.artist.name,
+                        albumCover: track.album.cover,
+                      }, // Pass track data using state
+                    }}
+                    className="flex items-center space-x-4"
+                  >
+                    <img
+                      src={track.album.cover}
+                      alt={track.title}
+                      className="w-12 h-12 rounded-full"
+                    />
+                    <div>
+                      <p className="font-bold">{track.title}</p>
+                      <p className="text-sm text-gray-500">{track.artist.name}</p>
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>

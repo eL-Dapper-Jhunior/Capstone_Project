@@ -46,6 +46,7 @@ function Sidebar() {
           <p className="mt-2">Share</p>
         </li>
       </ul>
+      
     </aside>
   );
 }
