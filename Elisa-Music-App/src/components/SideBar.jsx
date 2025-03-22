@@ -3,7 +3,7 @@ import React from "react";
 
 function Sidebar() {
   return (
-    <aside className="hidden lg:block w-1/5 space-y-6 text-center">
+    <aside className="hidden lg:block h-3/5 w-3/5 space-y-6 mt-28 text-center">
       <ul className="space-y-6">
         <li className="cursor-pointer hover:opacity-80">
           <img
