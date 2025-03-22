@@ -2,7 +2,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-// import SongListCard from "../components/SongListCard";
+import SongListCard from "../components/SongListCard"; // Make sure this path is correct
 
 function DashboardPage() {
   return (
