@@ -1,0 +1,23 @@
+{
+  "name": "capstone_project",
+  "version": "1.0.0",
+  "description": "Welcome to **Elisa's Music Player**, a web-based music application designed to help users discover and play their favorite tracks! This app provides real-time music search, playback controls, and dynamic content like top charts, artists, and genres.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eL-Dapper-Jhunior/Capstone_Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eL-Dapper-Jhunior/Capstone_Project/issues"
+  },
+  "homepage": "https://github.com/eL-Dapper-Jhunior/Capstone_Project#readme",
+  "devDependencies": {
+    "vite": "^6.2.3"
+  }
+}
