@@ -1,95 +1,115 @@
-// src/pages/DashboardPage.jsx
 import React from "react";
-import { Link } from "react-router-dom"; // Moved import to the top
+import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Sidebar from "../components/SideBar";
 
 function DashboardPage() {
+  const { darkMode } = useTheme();
+
   return (
-    <div className="bg-gradient-to-b from-blue-900 to-blue-800 min-h-screen text-white">
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-gradient-to-b from-blue-900 to-blue-800'} text-white`}>
       <Header />
 
-      <main className="p-4 lg:p-8 flex">
-        <section className="flex-1">
-          <div className="bg-blue-700 p-8 rounded-3xl shadow-lg w-[600px] ml-60">
-            <h2 className="text-3xl font-bold mb-6 text-center">New</h2>
+      <main className="container mx-auto p-4 lg:p-8 flex flex-col lg:flex-row">
+        {/* Sidebar - Hidden on mobile, shown on desktop */}
+        <div className="lg:w-1/6 mb-6 lg:mb-0">
+          <Sidebar />
+        </div>
 
-            {/* Vertical Grid with Top Charts, Artists, and Genres */}
+        {/* Main Content Area */}
+        <section className="lg:w-5/6 lg:pl-8">
+          {/* New Releases Section */}
+          <div className={`p-6 rounded-3xl shadow-lg mb-8 ${darkMode ? 'bg-gray-800' : 'bg-blue-700'}`}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-white">New Releases</h2>
+
+            {/* Responsive Grid Sections */}
             <div className="space-y-10">
-              {/* Top Charts Section */}
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Top Charts</h3>
-                <div className="flex space-x-4">
-                  <Link to="/music">
-                    <img
-                      src="/disc.png"
-                      alt="Track 1"
-                      className="w-24 h-24 rounded-full cursor-pointer"
-                    />
-                  </Link>
-                  <img src="/disc.png" alt="Track 2" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Track 3" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Track 4" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Track 5" className="w-24 h-24 rounded-full" />
-                </div>
-              </div>
+              {/* Top Charts */}
+              <SectionWithTitle 
+                title="Top Charts" 
+                darkMode={darkMode}
+                items={5}
+              />
 
-              {/* Repeat for Top Artists and Genres */}
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Top Artists</h3>
-                <div className="flex space-x-4">
-                  <img src="/disc.png" alt="Artist 1" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Artist 2" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Artist 3" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Artist 4" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Artist 5" className="w-24 h-24 rounded-full" />
-                </div>
-              </div>
+              {/* Top Artists */}
+              <SectionWithTitle 
+                title="Top Artists" 
+                darkMode={darkMode}
+                items={5}
+              />
 
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Genres</h3>
-                <div className="flex space-x-4">
-                  <img src="/disc.png" alt="Genre 1" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Genre 2" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Genre 3" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Genre 4" className="w-24 h-24 rounded-full" />
-                  <img src="/disc.png" alt="Genre 5" className="w-24 h-24 rounded-full" />
-                </div>
-              </div>
+              {/* Genres */}
+              <SectionWithTitle 
+                title="Genres" 
+                darkMode={darkMode}
+                items={5}
+              />
             </div>
           </div>
 
-          {/* Music Player Section Centered */}
-          <div className="bg-blue-900 mt-16 rounded-lg flex items-center justify-center p-4 w-[80%] ml-56">
-            <img src="/disc.png" alt="Track Cover" className="w-16 h-16 rounded-full" />
-            <p className="ml-4 text-xl">In My Blood</p>
+          {/* Music Player */}
+          <div className={`rounded-lg p-4 flex flex-col sm:flex-row items-center ${darkMode ? 'bg-gray-800' : 'bg-blue-900'} transition-colors duration-300`}>
+            <div className="flex items-center mb-4 sm:mb-0">
+              <img src="/disc.png" alt="Track Cover" className="w-12 h-12 sm:w-16 sm:h-16 rounded-full" />
+              <p className="ml-4 text-lg sm:text-xl text-white">In My Blood</p>
+            </div>
 
-            <div className="ml-auto flex items-center space-x-4">
-              <button className="p-2 bg-gray-800 rounded-full">
-                <img src="/previous.png" alt="Previous" className="w-6" />
-              </button>
-
-              {/* Play Button links to Music Page */}
+            <div className="sm:ml-auto flex items-center space-x-2 sm:space-x-4 mt-4 sm:mt-0">
+              <PlayerButton icon="/previous.png" alt="Previous" darkMode={darkMode} />
+              
               <Link to="/music">
-                <button className="p-2 bg-gray-800 rounded-full">
-                  <img src="/Play.png" alt="Play/Pause" className="w-6" />
-                </button>
+                <PlayerButton 
+                  icon="/Play.png" 
+                  alt="Play/Pause" 
+                  darkMode={darkMode} 
+                  className="w-10 h-10 sm:w-12 sm:h-12" 
+                />
               </Link>
-
-              <button className="p-2 bg-gray-800 rounded-full">
-                <img src="/next.png" alt="Next" className="w-6" />
-              </button>
+              
+              <PlayerButton icon="/next.png" alt="Next" darkMode={darkMode} />
             </div>
           </div>
         </section>
-
-        {/* Sidebar on the right */}
-        <Sidebar />
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+// Reusable Section Component
+function SectionWithTitle({ title, items, darkMode }) {
+  return (
+    <div>
+      <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
+        {title}
+      </h3>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        {Array.from({ length: items }).map((_, i) => (
+          <div key={i} className="flex flex-col items-center">
+            <img 
+              src="/disc.png" 
+              alt={`${title} ${i+1}`} 
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover hover:scale-105 transition-transform"
+            />
+            <span className="mt-2 text-sm text-white">
+              {title} {i+1}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Reusable Player Button Component
+function PlayerButton({ icon, alt, darkMode, className = "" }) {
+  return (
+    <button className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-blue-800 hover:bg-blue-700'} transition-colors ${className}`}>
+      <img src={icon} alt={alt} className="w-5 h-5 sm:w-6 sm:h-6" />
+    </button>
   );
 }
 

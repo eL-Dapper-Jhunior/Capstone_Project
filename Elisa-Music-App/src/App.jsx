@@ -1,21 +1,23 @@
-// src/App.js
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";  // Import HomePage
-import DashboardPage from "./pages/DashboardPage";  // Import Dashboard
-import MusicPlayerPage from "./pages/MusicPlayerPage";  // Import MusicPlayer
+import { ThemeProvider } from "./context/ThemeContext";
+import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
+import MusicPlayerPage from "./pages/MusicPlayerPage";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Define routes */}
-        <Route path="/" element={<HomePage />} />  
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/music" element={<MusicPlayerPage />} />
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/music" element={<MusicPlayerPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 

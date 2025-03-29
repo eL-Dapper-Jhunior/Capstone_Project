@@ -1,35 +1,75 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 import FeatureCard from "./FeatureCard";
+import { useTheme } from "../context/ThemeContext";
 
 function FeatureSection() {
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
+  const { darkMode } = useTheme();
 
-  const handleButtonClick = () => {
-    navigate("/dashboard"); // Navigate to the dashboard page when button is clicked
-  };
+  const features = [
+    {
+      title: "Shazam-Like Search",
+      icon: "🎵",
+      description: "Identify songs by playing audio.",
+      bgClass: "bg-[color:var(--primary)]/20"
+    },
+    {
+      title: "Smart Search",
+      icon: "🔍",
+      description: "Find any track or artist instantly.",
+      bgClass: "bg-[color:var(--secondary)]/20" 
+    },
+    {
+      title: "Premium Audio",
+      icon: "🎧",
+      description: "Lossless high-quality streaming.",
+      bgClass: "bg-[color:var(--accent)]/20"
+    }
+  ];
 
   return (
-    <section className="bg-gradient-bg text-white p-20 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6 text-center">Top Features</h2>
+    <section className={`
+      min-h-screen w-full
+      ${darkMode ? 'bg-dark-gradient-bg' : 'bg-gradient-bg'}
+      px-6 py-12 md:px-12 md:py-20
+      text-white
+      transition-all duration-500
+    `}>
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+          Top Features
+        </h2>
 
-      {/* Feature Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <FeatureCard title="Shazam-Like Search" icon="🎵" description="Identify songs by playing audio." />
-        <FeatureCard title="Find Songs, Artists, Albums" icon="🔍" description="A simple search tool." />
-        <FeatureCard title="High-Quality Streaming" icon="🎧" description="Enjoy tracks in crystal-clear sound." />
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              title={feature.title}
+              icon={feature.icon}
+              description={feature.description}
+              className={feature.bgClass}
+            />
+          ))}
+        </div>
 
-      {/* Try for Free Button */}
-      <div className="flex justify-center  mt-16">
-        <button
-          onClick={handleButtonClick} // Handle click event to navigate to /dashboard
-          className="bg-blue-900 mr-1/3 text-white h-16 px-6 py-2 border-2 border-white rounded-full hover:bg-blue-700 hover:text-white transition duration-300"
-        >
-          Try for Free
-        </button>
+        <div className="flex justify-center mt-16">
+              <button
+        onClick={() => navigate('/dashboard')}
+        className={`
+          px-8 py-4 rounded-full
+          text-lg font-semibold
+          ${darkMode ? 'bg-[color:var(--darkSecondary)]' : 'bg-[color:var(--secondaryBlue)]'}
+          border-2 ${darkMode ? 'border-purple-400' : 'border-blue-200'}
+          hover:opacity-90
+          hover:shadow-lg
+          transition-all duration-300
+        `}
+      >
+        Try for Free
+      </button>
+        </div>
       </div>
-      <img src="/music.png" alt="" className="absolute left-80 -mt-20 h-40" /> {/* Adjust as needed */}
     </section>
   );
 }

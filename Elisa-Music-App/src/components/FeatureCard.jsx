@@ -1,12 +1,19 @@
-// src/components/FeatureCard.jsx
-import React from "react";
+import React from 'react';
 
 function FeatureCard({ title, description, icon }) {
   return (
-    <div className="bg-blue-500 bg-opacity-50 text-white p-4 rounded-3xl shadow-lg flex flex-col items-center h-60 w-2xl">
-      <div className="text-4xl mt-2">{icon}</div> {/* Icon slot */}
-      <h3 className="text-2xl font-bold mt-3">{title}</h3>
-      <p className="text-center text-lg mt-4">{description}</p>
+    <div className="
+      bg-blue-500/50 dark:bg-purple-800/60 
+      text-white p-6 rounded-3xl shadow-lg 
+      flex flex-col items-center h-full
+      transition-all hover:scale-[1.02]
+      min-h-[240px] w-full
+    ">
+      <div className="text-5xl mb-4">{icon}</div>
+      <h3 className="text-xl md:text-2xl font-bold mb-2 text-center">{title}</h3>
+      <p className="text-center text-base md:text-lg opacity-90">
+        {description}
+      </p>
     </div>
   );
 }
