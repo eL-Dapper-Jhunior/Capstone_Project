@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Mic, MicOff } from "lucide-react";
 
 function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
 
   const handleSearch = async (query) => {
     if (!query) {
       setSearchResults([]);
       return;
     }
-    
+
     try {
       const response = await axios.get(
         `https://thingproxy.freeboard.io/fetch/https://api.deezer.com/search?q=${query}`
@@ -29,16 +33,53 @@ function Header() {
     }
   };
 
+  const startRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorderRef.current = mediaRecorder;
+    chunksRef.current = [];
+
+    mediaRecorder.ondataavailable = (e) => {
+      chunksRef.current.push(e.data);
+    };
+
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(chunksRef.current, { type: "audio/wav" });
+      const formData = new FormData();
+      formData.append("api_token", import.meta.env.VITE_APP_AUDD_API_KEY);
+      formData.append("file", audioBlob);
+      formData.append("return", "apple_music,deezer,spotify");
+
+      try {
+        const response = await axios.post("https://api.audd.io/", formData);
+        const title = response.data.result?.title;
+        if (title) {
+          setSearchQuery(title);
+          handleSearch(title);
+        } else {
+          alert("No match found.");
+        }
+      } catch (error) {
+        console.error("AudD API error:", error);
+      }
+    };
+
+    mediaRecorder.start();
+    setIsRecording(true);
+
+    setTimeout(() => {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }, 6000); // record for 6 seconds
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-blue-700 text-white p-4 shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Logo */}
         <Link to="/" className="text-2xl font-bold flex items-center">
-          <span className="mr-2">🎵</span>
-          Elisa's
+          <span className="mr-2">🎵</span> Elisa's
         </Link>
 
-        {/* Search Bar - Relative positioning creates stacking context */}
         <div className="relative w-full md:w-96">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,10 +95,16 @@ function Header() {
               handleSearch(e.target.value);
             }}
             onKeyDown={handleKeyDown}
-            className="w-full pl-10 pr-4 py-2 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-10 py-2 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <button
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-700"
+            onClick={startRecording}
+            title="Tap to identify song"
+          >
+            {isRecording ? <MicOff className="animate-pulse" /> : <Mic />}
+          </button>
 
-          {/* Search Results - Appears above everything */}
           {searchResults.length > 0 && (
             <div className="absolute z-50 mt-2 w-full bg-white text-black rounded-lg shadow-xl max-h-96 overflow-y-auto">
               <ul className="divide-y divide-gray-200">
@@ -92,7 +139,6 @@ function Header() {
           )}
         </div>
 
-        {/* Auth Buttons */}
         <div className="flex space-x-4">
           <button className="bg-white text-blue-900 px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
             Sign Up
