@@ -3,13 +3,13 @@
 ---
 
 ```markdown
-# 🎵 Elisa's Music Player
+#🎵Elisa's Music Player
 
 A modern and intuitive music streaming app with stunning UI/UX, built using **React** and **Tailwind CSS**. It features music playback, audio controls, smart search capabilities, and dark mode support.
 
 ---
 
-## 🚀 Features
+##🚀Features
 
 - 🎧 **Hero Section** with animated headphone and CTA
 - 🔍 **Smart & Shazam-like Search** (via upcoming AudD API integration)
@@ -30,7 +30,7 @@ A modern and intuitive music streaming app with stunning UI/UX, built using **Re
 
 ---
 
-## 📁 Folder Structure
+##📁Folder Structure
 
 ```
 src/
